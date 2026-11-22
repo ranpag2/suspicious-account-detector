@@ -6,7 +6,7 @@ Ada dua penyimpanan paralel di `dataset.cpp`, keduanya `std::vector` sehingga ti
 
 ```text
 dataset = [ Dataset 0 , Dataset 1 , Dataset 2 , ... ]   <- bisa dibaca semua peran
-label   = [ LabelSet 0, LabelSet 1, LabelSet 2, ... ]   <- hanya generator (tulis) dan evaluator (baca)
+label   = [ LabelSet 0, LabelSet 1, LabelSet 2, ... ]   <- hanya red (tulis) dan purple (baca)
 
 dataset[k] dan label[k] adalah pasangan.
 rekening ke-i di dataset[k] berpasangan dengan label[k][i].
@@ -33,7 +33,6 @@ struct Rek {
     long long in = 0;         // total dana masuk
     long long out = 0;        // total dana keluar
     // hasil deteksi: diisi detektor, awalnya kosong
-    double    rasio = 0;      // fitur turunan detektor
     double    skor = 0;       // 0-1, makin tinggi makin mencurigakan
     bool      flag = false;   // true = terindikasi
 };
@@ -45,7 +44,7 @@ struct Dataset {
     std::vector<Trx>  trx;
     std::vector<Rek>  rek;
     Status            status = Status::BELUM;
-    std::string       catatan;        // diisi detektor, contoh: "min 20 trx masuk, rasio >= 0.70"
+    std::string       catatan;        // catatan mengenai deteksi
 };
 
 // Khusus red dan purple (label.h): kunci jawaban
@@ -66,12 +65,10 @@ Peran disimpan sebagai teks, bukan `enum`, supaya red bisa menambah jenis peran 
 
 ```text
 1. Buat      Red menerima seed dari user, lalu menambahkan satu Dataset dan satu LabelSet.
-             status = BELUM, flag/skor/rasio kosong.
+             status = BELUM, flag/skor kosong.
 2. Dipilih   User memilih dataset mana yang akan dideteksi (indeks k).
-3. Deteksi   Blue membaca dataset[k].trx dan agregatnya, lalu MENIMPA field rasio, skor, flag,
+3. Deteksi   Blue membaca dataset[k].trx dan agregatnya, lalu MENIMPA field skor, flag,
              catatan, dan status = SUDAH. trx dan agregat tidak pernah diubah.
-4. Dipakai   Menu 2, 3, dan 4 membaca hasil yang sudah tersimpan. Tidak ada hitung ulang
-             deteksi setiap kali menu dibuka.
 ```
 
 Setiap dataset cukup dideteksi satu kali untuk mendapat label indikasi. Contoh kondisi setelah dataset 0 dideteksi:
@@ -113,10 +110,3 @@ Karena semuanya berjalan dalam satu proses, isolasi dijaga lewat aturan include:
 - Jika `status == SUDAH`: `catatan` tidak kosong.
 - Deteksi tidak mengubah `trx` maupun agregat (bandingkan sebelum dan sesudah).
 - Tidak ada akses ke `label` dari kode detektor.
-
-### 4.7 Konsekuensi karena tanpa batas
-
-- Pengurutan wajib `std::sort`. Bubble sort O(n²) tidak layak untuk dataset besar.
-- Tidak boleh ada array lokal berukuran tetap berdasarkan jumlah rekening (contoh: `bool pernah[MAX_REK]` di aliran dana). Pakai `std::vector`.
-- Lebar kolom tabel harus tahan nomor rekening dan nominal yang panjang.
-- Penghitung jumlah memakai `long long` jika bisa melebihi 2 miliar.
