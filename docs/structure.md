@@ -34,7 +34,7 @@ suspicious-account-detector/
 | Lapisan | File | Boleh bergantung pada |
 |---|---|---|
 | 0 | config, types | tidak ada |
-| 1 | data, util, sorting, pencarian | lapisan 0 |
+| 1 | data, util, sorting, searching | lapisan 0 |
 | 2 | generator, detector | lapisan 0-1 |
 | 3 | evaluation | lapisan 0-2 |
 | 4 | statistics, appreance | lapisan 0-3 |
