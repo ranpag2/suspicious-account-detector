@@ -11,7 +11,7 @@ suspicious-account-detector/
 │   ├── config.h              # konstanta: batas jumlah, daftar peran, batas nominal, label
 │   ├── types.h               # definisi struct transaksi dan rekening
 │   │
-│   ├── data.h / data.cpp     # penyimpanan data (transaksi, rekening, penanda siap)
+│   ├── dataset.h / dataset.cpp     # penyimpanan data (transaksi, rekening, penanda siap)
 │   ├── util.h / util.cpp     # input angka aman, angka acak, persentase
 │   ├── sorting.h / .cpp      # pengurutan
 │   ├── searching.h / .cpp    # pencarian
@@ -34,7 +34,7 @@ suspicious-account-detector/
 | Lapisan | File | Boleh bergantung pada |
 |---|---|---|
 | 0 | config, types | tidak ada |
-| 1 | data, util, sorting, searching | lapisan 0 |
+| 1 | dataset, util, sorting, searching | lapisan 0 |
 | 2 | generator, detector | lapisan 0-1 |
 | 3 | evaluation | lapisan 0-2 |
 | 4 | statistics, appreance | lapisan 0-3 |
