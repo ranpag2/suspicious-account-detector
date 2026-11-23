@@ -7,7 +7,7 @@ rekening yang tidak wajar, lalu mengevaluasi seberapa baik deteksinya.
 
 Proyek dikerjakan 3 orang dengan pembagian ala tim keamanan siber:
 
-| Tim | Tugas | Memiliki | Tidak boleh |
+| Peran | Tugas | Memiliki | Tidak boleh |
 |---|---|---|---|
 | Red | Generator | pembuatan dataset dan kunci jawaban | melihat cara kerja detektor |
 | Blue | Detektor | aturan deteksi dan ambangnya | melihat cara kerja generator dan kunci jawaban |
