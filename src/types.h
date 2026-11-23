@@ -1,0 +1,59 @@
+#pragma once
+// Lapisan 0 - semua definisi tipe data proyek. Hanya struct dan enum, tanpa
+// logika, tanpa cetak, dan tanpa variabel global.
+//
+// Yang ada di sini adalah BENTUK datanya (terbuka untuk semua peran).
+// Penyimpanannya (vector dataset dan label) dideklarasikan di tempat lain:
+//   - dataset.h : extern std::vector<Dataset> dataset   (semua peran)
+//   - label.h   : extern std::vector<LabelSet> label    (hanya Red dan Purple;
+//                 detector.cpp dilarang meng-include label.h, lihat model.md 4.5)
+#include <string>
+#include <vector>
+
+// ---- Kontrak bersama: boleh dibaca semua peran -----------------------------
+
+// Satu transaksi. Hanya hal yang bisa diamati dari luar.
+struct Trx {
+    int       dari = 0;   // indeks rekening pengirim
+    int       ke   = 0;   // indeks rekening penerima
+    long long nom  = 0;   // nominal (rupiah, > 0)
+    int       jam  = 0;   // 0-23
+};
+
+// Satu rekening.
+struct Rek {
+    std::string no;           // "R0001", "R0002", ... (lihat NO_REK_* di config.h)
+
+    // Agregat: diisi sekali oleh generator (Red), tidak pernah diubah detektor.
+    int       masuk  = 0;     // jumlah trx masuk
+    int       keluar = 0;     // jumlah trx keluar
+    long long in     = 0;     // total dana masuk
+    long long out    = 0;     // total dana keluar
+
+    // Hasil deteksi: diisi detektor (Blue), awalnya kosong.
+    double    rasio = 0;      // rasio dana keluar terhadap masuk
+    double    skor  = 0;      // 0-1, makin tinggi makin mencurigakan
+    bool      flag  = false;  // true = terindikasi
+};
+
+// Sudah dideteksi atau belum.
+enum class Status { BELUM, SUDAH };
+
+// Satu dataset hasil satu kali "Buat Data".
+struct Dataset {
+    unsigned          seed = 0;              // seed yang benar-benar dipakai
+    std::vector<Trx>  trx;
+    std::vector<Rek>  rek;
+    Status            status = Status::BELUM;
+    std::string       catatan;               // catatan mengenai deteksi
+};
+
+// ---- Kunci jawaban: bentuknya terbuka, isinya hanya Red (tulis) dan Purple (baca)
+
+// Kebenaran untuk satu rekening. rek[i] di dataset[k] berpasangan dengan label[k][i].
+struct Label {
+    std::string peran;        // "Biasa", "Pedagang", "Penampung", dst. (teks bebas)
+    std::string pola;         // pola yang membuat rekening ini jahat (model.md 4.7)
+    bool        jahat = false;
+};
+using LabelSet = std::vector<Label>;
