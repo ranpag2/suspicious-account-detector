@@ -12,6 +12,7 @@
 #include "types.h"
 
 extern std::vector<Dataset> dataset;
+extern std::vector<LabelSet> label;
 
 // ---- Akses ringan ----------------------------------------------------------
 int  jumlahDataset();                  // dataset.size()
