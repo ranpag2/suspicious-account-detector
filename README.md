@@ -24,7 +24,7 @@ dan kontrak antarmuka terbuka untuk semua dan ada di dokumen bersama.
 
 ```text
         ┌──────────┐   seed    ┌────────────┐
- User ─▶│ 1. Buat  │──────────▶│  Dataset   │  status: BELUM
+User ─▶│ 1. Buat  │ ────────▶│  Dataset   │  status: BELUM
         │   Data   │   (Red)   │  + kunci   │
         └──────────┘           └─────┬──────┘
                                      │ user memilih dataset aktif
@@ -65,7 +65,7 @@ Layar selalu di-clear saat berpindah page. Ada tiga jenis page:
 |---|---|---|
 | Menu utama | pilihan 1-5 | `0` keluar |
 | Submenu | pilihan turunan | `0` kembali |
-| Hasil | tabel (maks. 10 baris, dengan paging dan search) atau ringkasan | `-1` kembali |
+| Hasil | tabel (maks. 10 baris, dengan paging dan search) atau ringkasan | `0` kembali |
 
 Detail lengkap, contoh layar, dan aturan input ada di [docs/menu.md](docs/menu.md).
 
@@ -76,9 +76,7 @@ Detail lengkap, contoh layar, dan aturan input ada di [docs/menu.md](docs/menu.m
    folder atau dokumen privat pihak lain.
 3. Purple mengintegrasikan semuanya lewat antarmuka yang sudah disepakati.
 4. Purple menjalankan evaluasi, lalu membagikan umpan balik terbatas ke tiap
-   pihak (contoh: "recall rendah pada dataset tertentu"), tanpa membuka rumus
-   pihak lain.
-5. Red dan Blue memperbaiki bagiannya, lalu putaran berikutnya dimulai.
+   pihak (contoh: "recall rendah pada dataset tertentu").
 
 ## Peta dokumen
 
