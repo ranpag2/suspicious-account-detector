@@ -48,6 +48,12 @@ struct Dataset {
     std::string       catatan;               // catatan mengenai deteksi
 };
 
+// Rentang indeks setengah terbuka [awal, akhir) hasil pencarian. Kosong jika awal == akhir.
+struct Rentang {
+    int awal  = 0;
+    int akhir = 0;
+};
+
 // ---- Kunci jawaban: bentuknya terbuka, isinya hanya Red (tulis) dan Purple (baca)
 
 // Kebenaran untuk satu rekening. rek[i] di dataset[k] berpasangan dengan label[k][i].
