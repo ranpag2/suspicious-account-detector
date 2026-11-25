@@ -57,3 +57,21 @@ struct Label {
     bool        jahat = false;
 };
 using LabelSet = std::vector<Label>;
+
+// ---- Detektor (Blue) -------------------------------------------------------
+ 
+// Ambang yang bisa diubah user lewat menu 4.4 dan dipakai menu 2 berikutnya.
+// Nilai awal sama dengan contoh tampilan di menu.md ("min 20 trx masuk, rasio >= 0.70").
+// Konstanta lain milik detektor (bobot skor, batas aliran dana) ada di detector.cpp.
+struct Ambang {
+    int    minTrxMasuk = 20;     // minimal jumlah trx masuk untuk dianggap terindikasi langsung
+    double minRasio    = 0.70;   // minimal rasio dana keluar / dana masuk (0 < nilai <= 1)
+};
+ 
+// Ringkasan satu kali deteksi, dipakai menu 2 untuk menampilkan hasil.
+struct HasilDeteksi {
+    int total       = 0;         // jumlah rekening yang diperiksa
+    int terindikasi = 0;         // langsung + lewatAliran
+    int langsung    = 0;         // memenuhi ambang sendiri (trx masuk dan rasio)
+    int lewatAliran = 0;         // terindikasi karena dananya datang dari rekening terindikasi
+};
