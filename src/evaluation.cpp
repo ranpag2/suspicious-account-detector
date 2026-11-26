@@ -1,7 +1,7 @@
 #include "evaluation.h"
 
 #include <algorithm>
-#include <cstdio>
+#include <cstdio> // format angka
 
 #include "config.h"
 #include "detector.h"
