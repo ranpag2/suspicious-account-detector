@@ -132,7 +132,6 @@ void tampilMenuUtama(const std::string& pesan) {
                  "2. Deteksi\n"
                  "3. Statistik\n"
                  "4. Evaluasi\n"
-                 "5. Test\n"
                  "0. Keluar\n"
                  "\n"
                  "Pilih: "
@@ -200,7 +199,7 @@ void tampilTabel(const SpecTabel& s, const std::vector<int>& terlihat, int halam
             cetakBaris(sel, lebar);
         }
     }
-    std::cout << "\nType -1 for search | Type page 1-" << semuaHalaman << " | Type 0 back: " << std::flush;
+    std::cout << "\nType 00 for search | Type page 1-" << semuaHalaman << " | Type 0 back: " << std::flush;
 }
 
 void tampilRingkasan(const std::string& judul, const std::vector<std::string>& baris, const std::string& pesan) {

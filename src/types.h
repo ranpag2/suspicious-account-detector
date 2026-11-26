@@ -70,8 +70,8 @@ using LabelSet = std::vector<Label>;
 // Nilai awal sama dengan contoh tampilan di menu.md ("min 20 trx masuk, rasio >= 0.70").
 // Konstanta lain milik detektor (bobot skor, batas aliran dana) ada di detector.cpp.
 struct Ambang {
-    int    minTrxMasuk = 20;     // minimal jumlah trx masuk untuk dianggap terindikasi langsung
-    double minRasio    = 0.70;   // minimal rasio dana keluar / dana masuk (0 < nilai <= 1)
+    int    minTrxMasuk = 5;     // minimal jumlah trx masuk untuk dianggap terindikasi langsung
+    double minRasio    = 0.50;   // minimal rasio dana keluar / dana masuk (0 < nilai <= 1)
 };
  
 // Ringkasan satu kali deteksi, dipakai menu 2 untuk menampilkan hasil.

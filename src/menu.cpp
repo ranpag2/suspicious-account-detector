@@ -9,8 +9,6 @@
 #include "detector.h"
 #include "evaluation.h"
 #include "generator.h"    // Red: int buatDataset(unsigned seed, std::string& alasan)
-#include "invarian.h"
-#include "label.h"        // hanya menu dan evaluasi yang boleh (model.md 4.5)
 #include "searching.h"
 #include "statistics.h"
 #include "util.h"
@@ -536,26 +534,6 @@ void submenuEvaluasi() {
     }
 }
 
-// ---- Menu 5: Test -----------------------------------------------------------
-
-void menuTest() {
-    const std::string judul = "5. TEST";
-    const int k = pilihDataset(judul);
-    if (k < 0 || !adaLabel(k)) return;
-    const Dataset& d = dataset[static_cast<std::size_t>(k)];
-
-    const std::vector<HasilTest> hasil = jalankanTest(d, label[static_cast<std::size_t>(k)], dataset.size(), label.size());
-
-    SpecTabel s;
-    s.judul = judul;
-    s.info = {infoDataset(d),
-              "Lulus " + std::to_string(jumlahLulus(hasil)) + " dari " + std::to_string(hasil.size()) + " test"};
-    s.header = {"Nama test", "Hasil", "Keterangan"};
-    s.kolomCari = {0};
-    for (const HasilTest& t : hasil) s.baris.push_back({t.nama, t.lulus ? "LULUS" : "GAGAL", t.detail.empty() ? "-" : t.detail});
-    halamanTabel(s);
-}
-
 }  // namespace
 
 // ---- Menu utama -------------------------------------------------------------
@@ -579,7 +557,6 @@ void menuUtama() {
                 case 2: menuDeteksi(); break;
                 case 3: submenuStatistik(); break;
                 case 4: submenuEvaluasi(); break;
-                case 5: menuTest(); break;
             }
         }
     } catch (const InputHabis&) {
