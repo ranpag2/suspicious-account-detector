@@ -99,26 +99,17 @@ Layar selalu di-clear saat berpindah page. Ada tiga jenis page:
 
 Detail lengkap, contoh layar, dan aturan input ada di [docs/menu.md](docs/menu.md).
 
-## Alur pengerjaan
-
-1. Semua anggota menyepakati kontrak bersama (bagian 1-4, 8-10) lebih dulu.
-2. Red, Blue, dan Purple mengerjakan bagiannya masing-masing tanpa membuka
-   folder atau dokumen privat pihak lain.
-3. Purple mengintegrasikan semuanya lewat antarmuka yang sudah disepakati.
-4. Purple menjalankan evaluasi, lalu membagikan umpan balik terbatas ke tiap
-   pihak (contoh: "recall rendah pada dataset tertentu").
-
 ## Peta dokumen
 
-| Bagian | Dokumen | Dibaca oleh |
-|---|---|---|
-| Overview | README ini | semua |
-| Project structure | [docs/structure.md](docs/structure.md) | semua |
-| Model data | [docs/model.md](docs/model.md) | semua |
-| Generator spec | docs/red/ | Red (dan Purple) |
-| Detektor spec | docs/blue/ | Blue (dan Purple) |
-| Evaluasi spec | docs/purple/ | Purple |
-| Menu program | [docs/menu.md](docs/menu.md) | semua |
+| Bagian | Dokumen |
+|---|---|
+| Overview | README ini |
+| Project structure | [docs/structure.md](docs/structure.md) |
+| Model data | [docs/model.md](docs/model.md) |
+| Generator spec | [docs/generator.md](docs/generator.md) |
+| Detektor spec | [docs/detector.md](docs/detector.md) |
+| Evaluasi spec | [docs/evaluation.md](docs/evaluation.md) |
+| Menu program | [docs/menu.md](docs/menu.md) |
 
 
 ## Contributors
@@ -132,14 +123,14 @@ Detail lengkap, contoh layar, dan aturan input ada di [docs/menu.md](docs/menu.m
       </a>
     </td>
     <td align="center">
-      <a href="https://github.com/ShenDoll">
-        <img src="https://github.com/ShenDoll.png?size=100" width="100px;" alt="Rangga"/><br />
+      <a href="https://github.com/ranpag2">
+        <img src="https://github.com/ranpag2.png?size=100" width="100px;" alt="Rangga"/><br />
         <sub><b>Rangga</b></sub>
       </a>
     </td>
     <td align="center">
-      <a href="https://github.com/ranpag2">
-        <img src="https://github.com/ranpag2.png?size=100" width="100px;" alt="Raphael"/><br />
+      <a href="https://github.com/ShenDoll">
+        <img src="https://github.com/ShenDoll.png?size=100" width="100px;" alt="Raphael"/><br />
         <sub><b>Raphael</b></sub>
       </a>
     </td>
