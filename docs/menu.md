@@ -114,22 +114,22 @@ No  Rek   Trx   Dana Masuk   Dana Keluar   Rasio   Status
 9   R031  22    2900000      2175000       0.75    TERINDIKASI
 10  R077  21    2700000      1998000       0.74    TERINDIKASI
 
-Type -1 for search | Type page 1-3 | Type 0 back: _
+Type 00 for search | Type page 1-3 | Type 0 back: _
 ```
 
 Arti input pada baris terakhir:
 
 | Input | Aksi |
 |---|---|
-| `-1` | Masuk mode search |
+| `00` | Masuk mode search |
 | `0` | Kembali ke submenu asal |
 | `1` sampai jumlah halaman | Lompat ke halaman itu |
 | selain itu | Pesan "Halaman tidak ada" (satu kali), page dirender ulang |
 
-**Alur search**, jika user mengetik `-1`:
+**Alur search**, jika user mengetik `00`:
 
 ```text
-Type -1 for search | Type page 1-3 | Type 0 back: -1
+Type 00 for search | Type page 1-3 | Type 0 back: 00
 Search: R14_
 ```
 
@@ -147,7 +147,7 @@ No  Rek   Trx   Dana Masuk   Dana Keluar   Rasio   Status
 4   R146  30    3410000      2900000       0.85    TERINDIKASI
 5   R147  29    3300000      2640000       0.80    TERINDIKASI
 
-Type -1 for search | Type page 1-1 | Type 0 back: _
+Type 00 for search | Type page 1-1 | Type 0 back: _
 ```
 
 Aturan search:
@@ -191,7 +191,7 @@ Tekan Enter untuk kembali...
 | 1 Buat Data | tidak | ringkasan (seed, indeks dataset baru, jumlah rekening, jumlah transaksi) | - | Menu utama |
 | 2 Deteksi | ya | ringkasan (ambang yang dipakai, jumlah terindikasi dari total rekening, status menjadi SUDAH) | - | Menu utama |
 | 3.1 Ringkasan umum | ya | ringkasan | - | Submenu 3 |
-| 3.2 Peringkat terindikasi | ya | tabel (rekening terindikasi, urut skor) | nomor rekening | Submenu 3 |
+| 3.2 Peringkat terindikasi | ya | tabel (rekening terindikasi, urut dana masuk terbesar) | nomor rekening | Submenu 3 |
 | 3.3 Peringkat pengirim | ya | tabel | nomor rekening | Submenu 3 |
 | 3.4 Transaksi terbesar | ya | tabel | rekening asal atau tujuan | Submenu 3 |
 | 3.5 Statistik per jam | ya | tabel (24 baris, 1 halaman) | jam | Submenu 3 |
@@ -207,7 +207,7 @@ Tekan Enter untuk kembali...
 - Page Pilih dataset menampilkan daftar dataset (indeks, seed, status BELUM/SUDAH), dan `0` kembali ke page asal.
 - Menu 3.2, 4.1, 4.2, dan 4.3 membutuhkan dataset berstatus SUDAH. Jika masih BELUM, tampil pesan satu kali: "Dataset belum dideteksi. Jalankan deteksi dahulu." lalu kembali ke submenu.
 - Menu 3.1, 3.3 - 3.7 boleh untuk dataset BELUM. Pada 3.1, baris "Terindikasi" hanya tampil jika status SUDAH.
-- Menu 2 pada dataset yang sudah SUDAH menimpa hasil deteksi lama (hanya `rasio`, `skor`, `flag`, `catatan`, `status`), pengubahan mengikuti spec deteksi.
+- Menu 2 pada dataset yang sudah SUDAH menimpa hasil deteksi lama (hanya `rasio`, `flag`, `catatan`, `status`), pengubahan mengikuti spec deteksi.
 - Ambang di 4.4 disimpan sebagai pengaturan global dan dipakai oleh menu 2 berikutnya. Dataset yang sudah dideteksi tidak berubah sampai dideteksi ulang lewat menu 2.
 - Tabel dengan 10 baris atau kurang tetap memakai page hasil yang sama (halaman 1/1).
 

@@ -7,7 +7,7 @@
 // cocok untuk "peringkat teratas" tanpa mengurutkan seluruh data.
 //
 // Versi di sini STABIL: elemen yang setara tetap dalam urutan awalnya (elemen
-// terpilih digeser ke depan, bukan ditukar). Jadi peringkat dengan skor sama
+// terpilih digeser ke depan, bukan ditukar). Jadi peringkat dengan nilai sama
 // selalu berurutan sama di setiap tampilan.
 #include <cstddef>
 #include <utility>
@@ -33,7 +33,7 @@ void selectionSortTop(std::vector<T>& v, std::size_t k, LebihDulu lebihDulu);
 // Fungsi-fungsi ini mengembalikan DAFTAR INDEKS, bukan mengurutkan ulang vektor
 // aslinya. Penting: rek harus tetap terurut menurut nomor agar binary search di
 // searching.h benar.
-enum class KunciRek { SKOR, RASIO, DANA_MASUK, DANA_KELUAR, TRX_MASUK, TRX_KELUAR };
+enum class KunciRek { RASIO, DANA_MASUK, DANA_KELUAR, TRX_MASUK, TRX_KELUAR };
 
 // Indeks rekening, nilai terbesar lebih dulu. Seri diurutkan menurut indeks naik.
 // hanyaTerindikasi = true memuat hanya rekening dengan flag. top > 0 membatasi

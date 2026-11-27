@@ -11,9 +11,6 @@ namespace {
 // Parameter internal detektor (bukan bagian ambang yang bisa diubah user).
 constexpr double BATAS_ALIRAN  = 0.50;  // porsi dana masuk dari rekening terindikasi agar ikut ditandai
 constexpr int    MAKS_PUTARAN  = 8;     // batas lapis penelusuran aliran dana
-constexpr double BOBOT_RASIO   = 0.60;  // bobot rasio pada skor
-constexpr double BOBOT_VOLUME  = 0.40;  // bobot banyak trx masuk / porsi aliran pada skor
-constexpr double SKALA_VOLUME  = 2.0;   // volume dianggap penuh pada 2x minTrxMasuk
 
 Ambang ambangAktif;   // nilai awal dari default member Ambang
 
@@ -86,19 +83,13 @@ HasilDeteksi deteksi(Dataset& d, const Ambang& a) {
         }
         if (!berubah) break;
     }
-    hitungDariTerindikasi(d, terindikasi, dari);   // porsi akhir untuk skor
 
-    // Tulis hasil: hanya rasio, skor, flag, catatan, status.
+    // Tulis hasil: hanya rasio, flag, catatan, status.
     HasilDeteksi h;
     h.total = n;
-    const double skalaMasuk = SKALA_VOLUME * static_cast<double>(std::max(1, a.minTrxMasuk));
     for (int i = 0; i < n; ++i) {
         Rek& r = d.rek[i];
-        const double sRasio   = std::min(1.0, rasio[i]);
-        const double sVolume  = std::min(1.0, static_cast<double>(r.masuk) / skalaMasuk);
-        const double sAliran  = r.in > 0 ? std::min(1.0, static_cast<double>(dari[i]) / static_cast<double>(r.in)) : 0.0;
         r.rasio = rasio[i];
-        r.skor  = std::min(1.0, BOBOT_RASIO * sRasio + BOBOT_VOLUME * std::max(sVolume, sAliran));
         r.flag  = terindikasi[i] != 0;
         if (r.flag) {
             ++h.terindikasi;

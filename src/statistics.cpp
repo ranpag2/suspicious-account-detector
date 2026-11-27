@@ -89,7 +89,7 @@ std::vector<KelompokNominal> distribusiNominal(const Dataset& d) {
 
 std::vector<int> peringkatTerindikasi(const Dataset& d) {
     if (d.status != Status::SUDAH) return {};
-    return urutRekening(d.rek, KunciRek::SKOR, /*hanyaTerindikasi=*/true);
+    return urutRekening(d.rek, KunciRek::RASIO, /*hanyaTerindikasi=*/true);
 }
 
 std::vector<int> peringkatPengirim(const Dataset& d) {

@@ -1,0 +1,48 @@
+name: Build and Release Binaries
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install MinGW-w64 (untuk cross-compile Windows)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y g++-mingw-w64-x86-64
+
+      - name: Build binary Linux
+        run: |
+          make
+          mv detector detector-linux
+
+      - name: Build binary Windows (.exe)
+        run: |
+          make win
+          mv detector.exe detector-windows.exe
+
+      - name: Upload ke GitHub Releases
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: Latest Build (${{ github.sha }})
+          body: |
+            Automated build dari commit ${{ github.sha }}:
+            - `detector-linux`: Binary untuk Linux (x86_64)
+            - `detector-windows.exe`: Binary standalone untuk Windows (x86_64)
+          files: |
+            detector-linux
+            detector-windows.exe
+          prerelease: false

@@ -40,7 +40,7 @@ struct KelompokNominal {
 };
 std::vector<KelompokNominal> distribusiNominal(const Dataset& d);   // selalu 5 kelompok
 
-// Rekening terindikasi menurut skor (kosong jika dataset BELUM).
+// Rekening terindikasi menurut total dana masuk (kosong jika dataset BELUM).
 std::vector<int> peringkatTerindikasi(const Dataset& d);
 // Rekening yang pernah mengirim, menurut total dana keluar.
 std::vector<int> peringkatPengirim(const Dataset& d);

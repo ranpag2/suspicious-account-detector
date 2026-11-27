@@ -32,7 +32,6 @@ struct Rek {
 
     // Hasil deteksi: diisi detektor (Blue), awalnya kosong.
     double    rasio = 0;      // rasio dana keluar terhadap masuk
-    double    skor  = 0;      // 0-1, makin tinggi makin mencurigakan
     bool      flag  = false;  // true = terindikasi
 };
 
@@ -68,7 +67,7 @@ using LabelSet = std::vector<Label>;
  
 // Ambang yang bisa diubah user lewat menu 4.4 dan dipakai menu 2 berikutnya.
 // Nilai awal sama dengan contoh tampilan di menu.md ("min 20 trx masuk, rasio >= 0.70").
-// Konstanta lain milik detektor (bobot skor, batas aliran dana) ada di detector.cpp.
+// Konstanta lain milik detektor (batas aliran dana) ada di detector.cpp.
 struct Ambang {
     int    minTrxMasuk = 5;     // minimal jumlah trx masuk untuk dianggap terindikasi langsung
     double minRasio    = 0.50;   // minimal rasio dana keluar / dana masuk (0 < nilai <= 1)

@@ -4,7 +4,6 @@ namespace {
 
 double nilaiKunci(const Rek& r, KunciRek kunci) {
     switch (kunci) {
-        case KunciRek::SKOR:       return r.skor;
         case KunciRek::RASIO:      return r.rasio;
         case KunciRek::DANA_MASUK: return static_cast<double>(r.in);
         case KunciRek::DANA_KELUAR:return static_cast<double>(r.out);

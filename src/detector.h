@@ -25,7 +25,7 @@ bool aturAmbang(const Ambang& a, std::string& alasan);
 std::string teksAmbang(const Ambang& a);
 
 // ---- Deteksi (menu 2) ------------------------------------------------------
-// Membaca d.trx dan agregat rekening, lalu MENIMPA rasio, skor, flag pada tiap
+// Membaca d.trx dan agregat rekening, lalu MENIMPA rasio dan flag pada tiap
 // rekening serta catatan dan status (= SUDAH) pada dataset. trx dan agregat tidak
 // pernah diubah. Hasil tidak bergantung pada hasil deteksi sebelumnya, jadi
 // mendeteksi ulang dengan ambang yang sama menghasilkan keluaran yang sama.
@@ -37,7 +37,6 @@ std::string teksAmbang(const Ambang& a);
 //      a.minRasio), dan sebagian besar dana masuknya berasal dari rekening yang
 //      sudah terindikasi. Diulang per lapis sampai tidak ada perubahan (maks. 8 putaran),
 //      sehingga rantai berlapis ikut tertangkap.
-// skor (0-1) hanya untuk mengurutkan: gabungan rasio, banyaknya trx masuk, dan
-// porsi dana dari rekening terindikasi. flag ditentukan oleh aturan di atas.
+// flag ditentukan sepenuhnya oleh aturan di atas.
 HasilDeteksi deteksi(Dataset& d, const Ambang& a);
 HasilDeteksi deteksi(Dataset& d);   // memakai ambangSaatIni()

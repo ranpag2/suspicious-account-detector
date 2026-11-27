@@ -106,28 +106,30 @@ void halamanTabel(const SpecTabel& s) {
         tampilTabel(s, terlihat, halaman, filter, ambilPesan());
         const std::string masukan = pangkas(bacaTeks());
 
+        // "00" dicek sebagai teks, sebelum parseInt (yang akan membacanya sebagai 0 = kembali).
+        if (masukan == "00") {
+            cetakPrompt("Search: ");
+            const std::string kata = pangkas(bacaTeks());
+            if (kata.empty()) {                       // kosong = hapus filter
+                filter.clear();
+                terlihat = semua;
+                halaman = 1;
+            } else {
+                const std::vector<int> hasil = saringBaris(s.baris, s.kolomCari, kata);
+                if (hasil.empty()) {                  // filter lama tetap
+                    pesan("Tidak ada hasil untuk \"" + kata + "\"");
+                } else {
+                    filter = kata;
+                    terlihat = hasil;
+                    halaman = 1;
+                }
+            }
+            continue;
+        }
+
         int v = 0;
         if (parseInt(masukan, v) == StatusBaca::OK) {
             if (v == 0) return;
-            if (v == -1) {
-                cetakPrompt("Search: ");
-                const std::string kata = pangkas(bacaTeks());
-                if (kata.empty()) {                       // kosong = hapus filter
-                    filter.clear();
-                    terlihat = semua;
-                    halaman = 1;
-                } else {
-                    const std::vector<int> hasil = saringBaris(s.baris, s.kolomCari, kata);
-                    if (hasil.empty()) {                  // filter lama tetap
-                        pesan("Tidak ada hasil untuk \"" + kata + "\"");
-                    } else {
-                        filter = kata;
-                        terlihat = hasil;
-                        halaman = 1;
-                    }
-                }
-                continue;
-            }
             if (v >= 1 && v <= jumlahHalaman(terlihat.size())) {
                 halaman = v;
                 continue;
@@ -244,13 +246,13 @@ void statTerindikasi() {
 
     SpecTabel s;
     s.judul = judul;
-    s.info = {infoAmbang(ambangUntuk(k)), infoDataset(d)};
-    s.header = {"Rek", "Trx", "Dana Masuk", "Dana Keluar", "Rasio", "Skor", "Status"};
+    s.info = {infoAmbang(ambangUntuk(k)), infoDataset(d), "Urut menurut total dana masuk"};
+    s.header = {"Rek", "Trx", "Dana Masuk", "Dana Keluar", "Rasio", "Status"};
     s.kolomCari = {0};
     for (int i : peringkatTerindikasi(d)) {
         const Rek& r = d.rek[static_cast<std::size_t>(i)];
         s.baris.push_back({r.no, std::to_string(r.masuk), std::to_string(r.in), std::to_string(r.out),
-                           desimal(r.rasio), desimal(r.skor), statusRekening(d, r)});
+                           desimal(r.rasio), statusRekening(d, r)});
     }
     halamanTabel(s);
 }
@@ -282,12 +284,12 @@ void statTransaksiTerbesar() {
     SpecTabel s;
     s.judul = judul;
     s.info = {infoDataset(d), std::to_string(TOP_TRX_TERBESAR) + " transaksi dengan nominal terbesar"};
-    s.header = {"Asal", "Tujuan", "Nominal", "Jam"};
+    s.header = {"Asal", "Tujuan", "Nominal"};
     s.kolomCari = {0, 1};
     for (int i : transaksiTerbesar(d)) {
         const Trx& t = d.trx[static_cast<std::size_t>(i)];
         s.baris.push_back({d.rek[static_cast<std::size_t>(t.dari)].no, d.rek[static_cast<std::size_t>(t.ke)].no,
-                           std::to_string(t.nom), std::to_string(t.jam)});
+                           std::to_string(t.nom)});
     }
     halamanTabel(s);
 }
@@ -304,8 +306,7 @@ void statPerJam() {
     s.header = {"Jam", "Trx", "Total Nominal", "Rata-rata"};
     s.kolomCari = {0};
     for (const BarisJam& b : statistikPerJam(d)) {
-        s.baris.push_back({(b.jam < 10 ? "0" : "") + std::to_string(b.jam), std::to_string(b.trx),
-                           std::to_string(b.total), std::to_string(b.rata)});
+        s.baris.push_back({rentangJam(b.jam), std::to_string(b.trx), std::to_string(b.total), std::to_string(b.rata)});
     }
     halamanTabel(s);
 }
@@ -455,12 +456,11 @@ void evalSalahTandai() {
     SpecTabel s;
     s.judul = judul;
     s.info = {infoAmbang(ambangUntuk(k)), infoDataset(d)};
-    s.header = {"Rek", "Peran", "Trx Masuk", "Rasio", "Skor"};
+    s.header = {"Rek", "Peran", "Trx Masuk", "Rasio"};
     s.kolomCari = {0, 1};
     for (int i : daftarFP(d, l)) {
         const std::size_t u = static_cast<std::size_t>(i);
-        s.baris.push_back({d.rek[u].no, l[u].peran, std::to_string(d.rek[u].masuk), desimal(d.rek[u].rasio),
-                           desimal(d.rek[u].skor)});
+        s.baris.push_back({d.rek[u].no, l[u].peran, std::to_string(d.rek[u].masuk), desimal(d.rek[u].rasio)});
     }
     halamanTabel(s);
 }

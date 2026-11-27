@@ -33,7 +33,6 @@ struct Rek {
     long long in = 0;         // total dana masuk
     long long out = 0;        // total dana keluar
     // hasil deteksi: diisi detektor, awalnya kosong
-    double    skor = 0;       // 0-1, makin tinggi makin mencurigakan
     bool      flag = false;   // true = terindikasi
 };
 
@@ -65,9 +64,9 @@ Peran disimpan sebagai teks, bukan `enum`, supaya red bisa menambah jenis peran 
 
 ```text
 1. Buat      Red menerima seed dari user, lalu menambahkan satu Dataset dan satu LabelSet.
-             status = BELUM, flag/skor kosong.
+             status = BELUM, flag kosong.
 2. Dipilih   User memilih dataset mana yang akan dideteksi (indeks k).
-3. Deteksi   Blue membaca dataset[k].trx dan agregatnya, lalu MENIMPA field skor, flag,
+3. Deteksi   Blue membaca dataset[k].trx dan agregatnya, lalu MENIMPA field rasio, flag,
              catatan, dan status = SUDAH. trx dan agregat tidak pernah diubah.
 ```
 
@@ -101,7 +100,7 @@ const int MAX_TRX = 10000;
 |---|---|---|---|
 | `Trx`, `no` | tulis | baca | baca |
 | agregat (`masuk`, `keluar`, `in`, `out`) | tulis | baca | baca |
-| `rasio`, `skor`, `flag`, `catatan`, `status` | tidak menyentuh | tulis | baca |
+| `rasio`, `flag`, `catatan`, `status` | tidak menyentuh | tulis | baca |
 | `label` (seluruhnya) | tulis | **dilarang** | baca |
 
 Karena semuanya berjalan dalam satu proses, isolasi dijaga lewat aturan include:
@@ -116,7 +115,7 @@ Karena semuanya berjalan dalam satu proses, isolasi dijaga lewat aturan include:
 - Untuk setiap trx: `0 <= dari, ke < rek.size()`, `dari != ke`, `nom > 0`, `0 <= jam <= 23`.
 - Untuk setiap dataset: Σ`in` = Σ`out` = Σ`nom` seluruh trx.
 - Agregat konsisten dengan trx: `rek[i].masuk` sama dengan jumlah trx yang `ke == i`, dan seterusnya.
-- Jika `status == BELUM`: semua `flag == false` dan `skor == 0`.
+- Jika `status == BELUM`: semua `flag == false` dan `rasio == 0`.
 - Jika `status == SUDAH`: `catatan` tidak kosong.
 - Deteksi tidak mengubah `trx` maupun agregat (bandingkan sebelum dan sesudah).
 - Tidak ada akses ke `label` dari kode detektor.

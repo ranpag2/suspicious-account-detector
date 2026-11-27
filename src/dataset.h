@@ -32,8 +32,8 @@ void hitungAgregat(Dataset& d);
 // ---- Validasi dan penambahan -----------------------------------------------
 // Memeriksa invarian model.md 4.6 yang bisa diperiksa dari dataset saja:
 // batas jumlah, nilai tiap trx, nomor rekening, agregat konsisten dengan trx,
-// dan aturan status (BELUM: skor/rasio 0 dan flag false; SUDAH: skor 0-1 dan
-// catatan terisi). Mengembalikan false dan mengisi `alasan` pada pelanggaran
+// dan aturan status (BELUM: rasio 0 dan flag false; SUDAH: catatan
+// terisi). Mengembalikan false dan mengisi `alasan` pada pelanggaran
 // pertama yang ditemukan.
 bool validasiDataset(const Dataset& d, std::string& alasan);
 

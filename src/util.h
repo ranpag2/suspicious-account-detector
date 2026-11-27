@@ -78,3 +78,4 @@ private:
 // ---- Persentase ------------------------------------------------------------
 // bagian / total * 100. Mengembalikan 0 jika total <= 0. Tidak dibulatkan.
 double persen(long long bagian, long long total);
+std::string rentangJam(int jam);

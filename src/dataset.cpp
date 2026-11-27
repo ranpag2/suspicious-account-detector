@@ -98,7 +98,7 @@ bool validasiDataset(const Dataset& d, std::string& alasan) {
 
     if (d.status == Status::BELUM) {
         for (const Rek& r : d.rek) {
-            if (r.flag || r.skor != 0 || r.rasio != 0) {
+            if (r.flag || r.rasio != 0) {
                 alasan = "Dataset BELUM dideteksi tetapi rekening " + r.no + " sudah punya hasil";
                 return false;
             }
@@ -107,12 +107,6 @@ bool validasiDataset(const Dataset& d, std::string& alasan) {
         if (d.catatan.empty()) {
             alasan = "Dataset SUDAH dideteksi tetapi catatan kosong";
             return false;
-        }
-        for (const Rek& r : d.rek) {
-            if (r.skor < 0 || r.skor > 1) {
-                alasan = "Rekening " + r.no + ": skor di luar 0-1";
-                return false;
-            }
         }
     }
     return true;

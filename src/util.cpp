@@ -5,6 +5,7 @@
 #include <chrono>
 #include <cmath>
 #include <cstdlib>
+#include <string>
 
 namespace {
 
@@ -156,4 +157,9 @@ bool Acak::peluang(double p) {
 double persen(long long bagian, long long total) {
     if (total <= 0) return 0.0;
     return static_cast<double>(bagian) * 100.0 / static_cast<double>(total);
+}
+
+std::string rentangJam(int jam) {
+    auto dua = [](int x) { return (x < 10 ? "0" : "") + std::to_string(x); };
+    return dua(jam) + "-" + dua((jam + 1) % 24);
 }
