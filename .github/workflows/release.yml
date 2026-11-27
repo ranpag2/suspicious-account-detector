@@ -4,21 +4,25 @@ on:
   push:
     branches:
       - main
-      - master
+    paths:
+      - 'main.cpp'
+      - 'src/**'
+      - 'Makefile'
+      - '.github/workflows/release.yml'
   workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  build-and-release:
+  # Job 1: Build Linux & Windows di runner Ubuntu
+  build-linux-win:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install MinGW-w64 (untuk cross-compile Windows)
+      - name: Install MinGW-w64
         run: |
           sudo apt-get update
           sudo apt-get install -y g++-mingw-w64-x86-64
@@ -33,6 +37,42 @@ jobs:
           make win
           mv detector.exe detector-windows.exe
 
+      - name: Upload sementara ke Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: binaries-linux-win
+          path: |
+            detector-linux
+            detector-windows.exe
+
+  # Job 2: Build macOS di runner macOS
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build Universal Binary macOS (Apple Silicon + Intel)
+        run: |
+          make CXXFLAGS="-O2 -arch arm64 -arch x86_64"
+          mv detector detector-macos
+
+      - name: Upload sementara ke Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: binary-macos
+          path: detector-macos
+
+  # Job 3: Gabungkan semua binary dan unggah ke GitHub Releases
+  release:
+    needs: [build-linux-win, build-macos]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download semua binary
+        uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+
       - name: Upload ke GitHub Releases
         uses: softprops/action-gh-release@v2
         with:
@@ -42,7 +82,9 @@ jobs:
             Automated build dari commit ${{ github.sha }}:
             - `detector-linux`: Binary untuk Linux (x86_64)
             - `detector-windows.exe`: Binary standalone untuk Windows (x86_64)
+            - `detector-macos`: Universal Binary untuk macOS (Apple Silicon & Intel)
           files: |
             detector-linux
             detector-windows.exe
+            detector-macos
           prerelease: false

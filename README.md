@@ -3,22 +3,51 @@
 Program konsol C++ yang membuat data transaksi rekening sintetis, mendeteksi
 rekening yang tidak wajar, lalu mengevaluasi seberapa baik deteksinya.
 
-## Gambaran besar
+## Overview
 
-Proyek dikerjakan 3 orang dengan pembagian ala tim keamanan siber:
+Suspicious Account Detector adalah program konsol C++ yang membantu analis menyaring rekening terindikasi sebagai penampung dana, dengan latar skenario dana judi online. Program tidak hanya pendeteksi tetapi juga dilengkapi pembuat data transaksi sintetis lengkap dengan kunci jawabannya, mendeteksi rekening yang tidak wajar, lalu mengevaluasi seberapa baik deteksinya.
 
-| Peran | Tugas | Memiliki | Tidak boleh |
-|---|---|---|---|
-| Red | Generator | pembuatan dataset dan kunci jawaban | melihat cara kerja detektor |
-| Blue | Detektor | aturan deteksi dan ambangnya | melihat cara kerja generator dan kunci jawaban |
-| Purple | Evaluasi dan menu | pengukuran hasil, antarmuka, integrasi | mengubah isi generator atau detektor |
+Detektor memakai dua tahap. Tahap pertama adalah aturan sederhana per rekening. Tahap kedua menelusuri aliran dana berlapis supaya rekening perantara ikut terjaring, padahal transaksi masuknya sedikit. Hasilnya adalah petunjuk bagi analis, bukan keputusan akhir: setiap rekening terindikasi masih perlu diperiksa manusia.
 
-Red dan Blue sengaja tidak saling tahu rancangan dan rumus pihak lain, sehingga
-hasil evaluasi Purple mencerminkan kemampuan deteksi, bukan kecocokan dua
-bagian yang ditulis oleh orang yang sama.
+Proyek dikerjakan dengan pembagian seperti tim keamanan siber. Red membuat generator, Blue membuat detektor, dan Purple membuat evaluasi dan antarmuka. Red dan Blue sengaja tidak saling mengetahui rumus pihak lain, sehingga hasil evaluasi mencerminkan kemampuan deteksi, bukan kecocokan dua bagian yang ditulis orang yang sama.
 
-Yang dirahasiakan adalah **rumus, ambang, dan parameter**. Nama, struktur data,
-dan kontrak antarmuka terbuka untuk semua dan ada di dokumen bersama.
+## Fitur dan keterbatasan
+
+### Fitur
+Generator dataset sintetis :
+- Satu seed menghasilkan satu dataset beserta kunci jawabannya. Seed yang sama selalu menghasilkan data yang identik.
+- Pola bervariasi: topologi langsung, berlapis 1-4 tingkat, bercabang, dan berputar. Jumlah serta nominal setoran, jam transaksi, dan pembagian dana diteruskan juga bervariasi, termasuk setoran sedikit di bawah batas bulat.
+
+Deteksi dua tahap :
+- Tahap 1 menandai rekening dengan trx masuk minimal sekian dan rasio dana diteruskan minimal sekian (default 5 trx dan 0.50).
+- Tahap 2 menandai rekening yang meneruskan dana dan menerima minimal 50% dananya dari rekening terindikasi, ditelusuri lapis demi lapis sampai 8 putaran.
+- Ambang batas bisa diubah lewat menu.
+
+Statistik :
+- Ringkasan umum, peringkat terindikasi, peringkat pengirim, transaksi terbesar, statistik per jam, distribusi nominal, dan aliran dana.
+
+Evaluasi :
+- Precision, recall, dan F1.
+- Daftar rekening jahat yang lolos (disertai alasan lolosnya) dan daftar rekening sah yang salah ditandai.
+
+### Keterbatasan
+
+Keterbatasan validitas :
+karena data transaksi asli tidak tersedia, proyek ini dievaluasi pada data sintetis yang dibuat berdasarkan pola penampung dana judi online, sehingga hasilnya hanya berlaku untuk skenario tersebut dan belum membuktikan kinerja pada data nyata. Meski begitu, data sintetis memberi kunci jawaban yang lengkap sehingga deteksi dapat diukur secara objektif.
+
+Generator dataset sintetis :
+- Data sintetis, jadi hasil berlaku untuk skenario yang dibangun dan bukan bukti kinerja di dunia nyata.
+- Hanya satu tipologi (penampung dana judi online dan rantai berlapis). Modus lain tidak dicakup.
+- Skala kecil: maksimal 2.000 rekening dan 10.000 transaksi per dataset.
+- Waktu hanya berupa jam 0-23, tanpa tanggal atau menit. Urutan transaksi dan kecepatan dana diteruskan tidak bisa diukur.
+- Tidak ada atribut nasabah seperti usia rekening, profil, perangkat, atau lokasi.
+
+Detektor :
+- Berbasis aturan dan ambang tetap, tidak belajar dari data.
+- Hasil hanya biner (terindikasi atau normal), tanpa tingkat risiko.
+
+Program :
+- Data hanya ada di memori. Tidak ada penyimpanan ke file maupun impor atau ekspor data.
 
 ## Siklus program
 
@@ -61,11 +90,12 @@ Aturan urutan:
 
 Layar selalu di-clear saat berpindah page. Ada tiga jenis page:
 
-| Page | Isi | Kembali dengan |
-|---|---|---|
-| Menu utama | pilihan 1-5 | `0` keluar |
-| Submenu | pilihan turunan | `0` kembali |
-| Hasil | tabel (maks. 10 baris, dengan paging dan search) atau ringkasan | `0` kembali |
+| Page | Isi |
+|---|---|
+| Menu utama | pilihan 1-5 |
+| Submenu | pilihan turunan |
+| Pemilihan dataset | pilihan dataset untuk tampilan hasil |
+| Hasil | tabel dengan paging dan search atau ringkasan |
 
 Detail lengkap, contoh layar, dan aturan input ada di [docs/menu.md](docs/menu.md).
 
@@ -82,21 +112,38 @@ Detail lengkap, contoh layar, dan aturan input ada di [docs/menu.md](docs/menu.m
 
 | Bagian | Dokumen | Dibaca oleh |
 |---|---|---|
-| 1-2, 9 | README ini | semua |
-| 3 | [docs/structure.md](docs/structure.md) | semua |
-| 4 | [docs/model.md](docs/model.md) | semua |
-| 5 Generator | docs/red/ | Red (dan Purple) |
-| 6 Detektor | docs/blue/ | Blue (dan Purple) |
-| 7 Evaluasi | docs/purple/ | Purple |
-| 8 | [docs/menu.md](docs/menu.md) | semua |
+| Overview | README ini | semua |
+| Project structure | [docs/structure.md](docs/structure.md) | semua |
+| Model data | [docs/model.md](docs/model.md) | semua |
+| Generator spec | docs/red/ | Red (dan Purple) |
+| Detektor spec | docs/blue/ | Blue (dan Purple) |
+| Evaluasi spec | docs/purple/ | Purple |
+| Menu program | [docs/menu.md](docs/menu.md) | semua |
 
-## 5. Spesifikasi generator
-Antarmuka saja: menerima seed, menambahkan satu dataset. Detail di docs/red/.
 
-## 6. Spesifikasi detektor
-Antarmuka saja: menerima dataset, mengisi hasil deteksi. Detail di docs/blue/.
+## Contributors
 
-## 7. Spesifikasi evaluasi
-Antarmuka saja: membandingkan hasil deteksi dengan kunci jawaban. Detail di docs/purple/.
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/ficaficul">
+        <img src="https://github.com/ficaficul.png?size=100" width="100px;" alt="Firsya"/><br />
+        <sub><b>Firsya</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/ShenDoll">
+        <img src="https://github.com/ShenDoll.png?size=100" width="100px;" alt="Rangga"/><br />
+        <sub><b>Rangga</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/ranpag2">
+        <img src="https://github.com/ranpag2.png?size=100" width="100px;" alt="Raphael"/><br />
+        <sub><b>Raphael</b></sub>
+      </a>
+    </td>
+  </tr>
+</table>
 
-## 9. Konvensi kode
+
